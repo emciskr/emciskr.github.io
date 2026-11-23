@@ -1,1 +1,474 @@
-hello world
+
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Svět koček 🐱</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff5fa;
+  color: #49364b;
+}
+
+header {
+  text-align: center;
+  padding: 55px 20px;
+  background: linear-gradient(135deg, #f7b9d7, #d9c2fa);
+}
+
+header h1 {
+  font-size: 42px;
+  margin: 0;
+}
+
+header p {
+  font-size: 18px;
+}
+
+nav {
+  background: #fff;
+  padding: 15px;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px #0001;
+}
+
+nav a {
+  color: #9c5791;
+  text-decoration: none;
+  margin: 12px;
+  font-weight: bold;
+}
+
+.container {
+  max-width: 1150px;
+  margin: auto;
+  padding: 25px;
+}
+
+h2 {
+  text-align: center;
+  color: #a75c96;
+  margin-top: 35px;
+}
+
+.search {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  margin: 25px auto;
+  padding: 15px;
+  border: 2px solid #e6b6d9;
+  border-radius: 25px;
+  font-size: 16px;
+  outline: none;
+}
+
+.filters {
+  text-align: center;
+  margin: 20px;
+}
+
+.filters button {
+  background: #e9c6e4;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 18px;
+  margin: 5px;
+  cursor: pointer;
+  color: #633c61;
+}
+
+.filters button:hover,
+.filters button.active {
+  background: #bd80b4;
+  color: white;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 22px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px #00000012;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 18px;
+}
+
+.card h3 {
+  color: #a75c96;
+  margin-top: 0;
+}
+
+.card button {
+  background: #bd80b4;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: #965b91;
+}
+
+#detail {
+  display: none;
+  background: white;
+  border-radius: 18px;
+  padding: 25px;
+  margin: 30px auto;
+  max-width: 700px;
+  box-shadow: 0 4px 15px #0001;
+}
+
+footer {
+  text-align: center;
+  background: #e9c6e4;
+  padding: 25px;
+  margin-top: 50px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🐱 Svět koček 🐱</h1>
+  <p>Objev nádherná kočičí plemena z celého světa!</p>
+</header>
+
+<nav>
+  <a href="#home">Domů</a>
+  <a href="#breeds">Plemena</a>
+  <a href="#about">O webu</a>
+</nav>
+
+<main class="container" id="home">
+
+<h2>🐾 Objev kočičí plemena</h2>
+
+<input
+  class="search"
+  type="text"
+  id="search"
+  placeholder="🔎 Hledej kočku podle názvu..."
+>
+
+<div class="filters">
+  <button class="active" onclick="filterCats('all', this)">Všechny</button>
+  <button onclick="filterCats('short', this)">Krátkosrsté</button>
+  <button onclick="filterCats('long', this)">Dlouhosrsté</button>
+  <button onclick="filterCats('hairless', this)">Bezsrsté</button>
+</div>
+
+<section id="breeds">
+  <div class="grid" id="catGrid"></div>
+</section>
+
+<div id="detail"></div>
+
+<section id="about">
+  <h2>💗 O tomto webu</h2>
+  <p style="text-align:center; line-height:1.8">
+    Vítej ve Světě koček! Najdeš zde informace o různých
+    kočičích plemenech, jejich vzhledu, původu a povaze.
+    Každá kočka je jedinečná a zaslouží si lásku!
+  </p>
+</section>
+
+</main>
+
+<footer>
+  🐾 Svět koček © 2026 | Vytvořeno s láskou ke kočkám 💗
+</footer>
+
+<script>
+
+const cats = [
+  {
+    name: "Mainská mývalí",
+    type: "long",
+    origin: "USA",
+    character: "Přátelská, inteligentní a hravá.",
+    description: "Velká kočka s dlouhou srstí, huňatým ocasem a výraznými oušky."
+  },
+  {
+    name: "Perská kočka",
+    type: "long",
+    origin: "Persie",
+    character: "Klidná, mazlivá a společenská.",
+    description: "Má dlouhou hustou srst a typický kulatý obličej."
+  },
+  {
+    name: "Sibiřská kočka",
+    type: "long",
+    origin: "Rusko",
+    character: "Hravá, odvážná a přátelská.",
+    description: "Silná kočka s hustou srstí přizpůsobenou chladnému počasí."
+  },
+  {
+    name: "Ragdoll",
+    type: "long",
+    origin: "USA",
+    character: "Jemná, klidná a mazlivá.",
+    description: "Známá svýma modrýma očima a hebkou srstí."
+  },
+  {
+    name: "Britská krátkosrstá",
+    type: "short",
+    origin: "Velká Británie",
+    character: "Klidná, nezávislá a přátelská.",
+    description: "Má kulatou hlavu, hustou srst a silné tělo."
+  },
+  {
+    name: "Siamská kočka",
+    type: "short",
+    origin: "Thajsko",
+    character: "Hlasitá, inteligentní a společenská.",
+    description: "Typická je světlým tělem, tmavými znaky a modrýma očima."
+  },
+  {
+    name: "Bengálská kočka",
+    type: "short",
+    origin: "USA",
+    character: "Energická, zvědavá a aktivní.",
+    description: "Má nádhernou skvrnitou srst připomínající divokou kočku."
+  },
+  {
+    name: "Habešská kočka",
+    type: "short",
+    origin: "Etiopie",
+    character: "Zvědavá, aktivní a hravá.",
+    description: "Elegantní kočka s krátkou srstí a atletickou postavou."
+  },
+  {
+    name: "Ruská modrá",
+    type: "short",
+    origin: "Rusko",
+    character: "Jemná, klidná a trochu rezervovaná.",
+    description: "Má stříbřitě modrou srst a zelené oči."
+  },
+  {
+    name: "Egyptská mau",
+    type: "short",
+    origin: "Egypt",
+    character: "Rychlá, inteligentní a oddaná.",
+    description: "Přirozeně skvrnitá kočka s elegantním vzhledem."
+  },
+  {
+    name: "Sphynx",
+    type: "hairless",
+    origin: "Kanada",
+    character: "Mazlivá, společenská a zvědavá.",
+    description: "Bezsrstá kočka s vrásčitou kůží a velkýma ušima."
+  },
+  {
+    name: "Peterbald",
+    type: "hairless",
+    origin: "Rusko",
+    character: "Aktivní a přátelská.",
+    description: "Elegantní plemeno, které může mít různý stupeň osrstění."
+  },
+  {
+    name: "Devon Rex",
+    type: "short",
+    origin: "Velká Británie",
+    character: "Hravá, veselá a společenská.",
+    description: "Má velké uši, krátkou zvlněnou srst a výrazné oči."
+  },
+  {
+    name: "Cornish Rex",
+    type: "short",
+    origin: "Velká Británie",
+    character: "Aktivní a zvědavá.",
+    description: "Je známá svou jemnou vlnitou srstí."
+  },
+  {
+    name: "Norská lesní",
+    type: "long",
+    origin: "Norsko",
+    character: "Nezávislá, chytrá a přátelská.",
+    description: "Velká kočka s hustou srstí a huňatým ocasem."
+  },
+  {
+    name: "Turecká angora",
+    type: "long",
+    origin: "Turecko",
+    character: "Elegantní, aktivní a inteligentní.",
+    description: "Má jemnou hedvábnou srst a štíhlou postavu."
+  },
+  {
+    name: "Skotská klapouchá",
+    type: "short",
+    origin: "Skotsko",
+    character: "Klidná a přítulná.",
+    description: "Je známá svými dopředu sklopenými oušky. Toto plemeno může mít dědičné problémy s chrupavkami a klouby."
+  },
+  {
+    name: "Americká krátkosrstá",
+    type: "short",
+    origin: "USA",
+    character: "Vyrovnaná, přátelská a přizpůsobivá.",
+    description: "Silná kočka s krátkou srstí a širokou škálou barev."
+  },
+  {
+    name: "Barmská kočka",
+    type: "short",
+    origin: "Myanmar",
+    character: "Mazlivá, společenská a hravá.",
+    description: "Má lesklou krátkou srst a výrazné oči."
+  },
+  {
+    name: "Japonský bobtail",
+    type: "short",
+    origin: "Japonsko",
+    character: "Veselý a aktivní.",
+    description: "Je známý svým krátkým ocasem připomínajícím bambulku."
+  }
+];
+
+const photos = [
+  "photo-1514888286974-6c03e2ca1dba",
+  "photo-1573865526739-10659fec78a5",
+  "photo-1495360010541-f48722b34f7d",
+  "photo-1513360371669-4adf3dd7dff8"
+];
+
+const grid = document.getElementById("catGrid");
+const detail = document.getElementById("detail");
+
+function renderCats(list) {
+  grid.innerHTML = "";
+
+  if (list.length === 0) {
+    grid.innerHTML = "<p>Žádná kočka nebyla nalezena. 🐾</p>";
+    return;
+  }
+
+  list.forEach(cat => {
+    const index = cats.indexOf(cat);
+    const photo = photos[index % photos.length];
+
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const img = document.createElement("img");
+    img.src = `https://images.unsplash.com/${photo}?auto=format&fit=crop&w=600&q=80`;
+    img.alt = "Kočka – " + cat.name;
+    img.loading = "lazy";
+
+    const content = document.createElement("div");
+    content.className = "card-content";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "🐱 " + cat.name;
+
+    const origin = document.createElement("p");
+    origin.textContent = "🌍 Původ: " + cat.origin;
+
+    const description = document.createElement("p");
+    description.textContent = cat.description;
+
+    const button = document.createElement("button");
+    button.textContent = "Více informací";
+    button.addEventListener("click", () => showDetail(cat));
+
+    content.append(heading, origin, description, button);
+    card.append(img, content);
+    grid.append(card);
+  });
+}
+
+function showDetail(cat) {
+  detail.style.display = "block";
+  detail.replaceChildren();
+
+  const heading = document.createElement("h2");
+  heading.textContent = "🐾 " + cat.name;
+
+  const origin = document.createElement("p");
+  origin.textContent = "🌍 Země původu: " + cat.origin;
+
+  const character = document.createElement("p");
+  character.textContent = "💗 Povaha: " + cat.character;
+
+  const description = document.createElement("p");
+  description.textContent = cat.description;
+
+  const close = document.createElement("button");
+  close.textContent = "Zavřít";
+  close.onclick = () => {
+    detail.style.display = "none";
+  };
+
+  detail.append(heading, origin, character, description, close);
+  detail.scrollIntoView({ behavior: "smooth" });
+}
+
+let currentFilter = "all";
+
+function update() {
+  const search = document.getElementById("search").value.toLowerCase();
+
+  const filtered = cats.filter(cat => {
+    const matchesName = cat.name.toLowerCase().includes(search);
+    const matchesType =
+      currentFilter === "all" || cat.type === currentFilter;
+
+    return matchesName && matchesType;
+  });
+
+  renderCats(filtered);
+}
+
+function filterCats(type, button) {
+  currentFilter = type;
+
+  document.querySelectorAll(".filters button").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+  update();
+}
+
+document.getElementById("search").addEventListener("input", update);
+
+renderCats(cats);
+
+</script>
+
+</body>
+</html>
+
